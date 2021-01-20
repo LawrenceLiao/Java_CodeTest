@@ -56,4 +56,15 @@ public class Bundle {
     public void setNumOfBundles(int numOfBundles) {
         this.numOfBundles = numOfBundles;
     }
+
+    @Override
+    public String toString() {
+        return "Bundle{" +
+                "format='" + format + '\'' +
+                ", code='" + code + '\'' +
+                ", numOfPosts=" + numOfPosts +
+                ", price=" + price +
+                ", numOfBundles=" + numOfBundles +
+                '}';
+    }
 }

@@ -1,50 +1,11 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Calculator {
-    /*{
-        Map<Integer,Double> bundlesOfImg=new HashMap<>();
-        bundlesOfImg.put(5,450.0);
-        bundlesOfImg.put(10,800.0);
 
-        Map<Integer,Double> bundlesOfFlac=new HashMap<>();
-        bundlesOfFlac.put(3,427.5);
-        bundlesOfFlac.put(6,810.0);
-        bundlesOfFlac.put(9,1147.5);
-
-
-        Map<Integer,Double> bundlesOfVid=new HashMap<>();
-        bundlesOfVid.put(3,570.0);
-        bundlesOfVid.put(5,900.0);
-        bundlesOfVid.put(9,1530.0);
-
-    }*/
     private int numOfImg=0;
     private int numOfFlac=0;
     private int numOfVid=0;
 
-    /*private final static Map<String,Map> listOfBundles=new HashMap<String,Map>(){
-        {
-            listOfBundles.put("IMG",new HashMap<Integer,Double>());
-            listOfBundles.get("IMG").put(5,450.0);
-            listOfBundles.get("IMG").put(10,800.0);
-
-            listOfBundles.put("FLAC",new HashMap<Integer,Double>());
-            listOfBundles.get("FLAC").put(3,427.5);
-            listOfBundles.get("FLAC").put(6,810.0);
-            listOfBundles.get("FLAC").put(9,1147.5);
-
-            listOfBundles.put("VID",new HashMap<Integer,Double>());
-            listOfBundles.get("VID").put(3,570);
-            listOfBundles.get("VID").put(5,900);
-            listOfBundles.get("VID").put(9,1530);
-
-
-        }
-
-    };*/
 
     public Calculator() {
     }
@@ -79,18 +40,19 @@ public class Calculator {
         this.numOfVid = numOfVid;
     }
 
+
     public List<Bundle> calculateImg(){
         int num10=0;
         int num5=0;
+        int numOfPost=numOfImg;
         List<Bundle> detailsOfBundles = new ArrayList<>();
-        if(numOfImg>10){
-         num10 = numOfImg/10;
-         numOfImg = numOfImg%10;
+        if(numOfPost>10){
+         num10 = numOfPost/10;
+         numOfPost = numOfPost%10;
         }
-        if(numOfImg>5){
+        if(numOfPost>5){
          num10 += 1;
-        }
-        if(numOfImg>0){
+        }else if(numOfPost>0){
          num5 += 1;
         }
 
@@ -102,78 +64,116 @@ public class Calculator {
             Bundle bundle2 = new Bundle("Image","IMG",10,800,num10);
             detailsOfBundles.add(bundle2);
         }
-        if(detailsOfBundles.size()>0){
-            return detailsOfBundles;
-        }
-        return null;
+        return detailsOfBundles;
     }
 
     public List<Bundle> calculateFlac(){
         int num3=0;
         int num6=0;
         int num9=0;
+        int numOfPost=numOfFlac;
         List<Bundle> detailsOfBundles = new ArrayList<>();
 
-        if(numOfFlac>9){
-            num9 = numOfFlac/9;
-            numOfFlac = numOfFlac%9;
+        if(numOfPost>9){
+            num9 = numOfPost/9;
+            numOfPost = numOfPost%9;
         }
-        if(numOfFlac>6){
+        if(numOfPost>6){
             num9 += 1;
-        }
-        if(numOfFlac>3){
+        }else if(numOfPost>3){
             num6 += 1;
-        }
-        if(numOfFlac>0){
+        }else if(numOfPost>0){
             num3 += 1;
         }
 
 
         if(num3!=0){
-            Bundle bundle1 = new Bundle("Audio","Flac",3,427.5,num3);
+            Bundle bundle1 = new Bundle("Audio","FLAC",3,427.5,num3);
             detailsOfBundles.add(bundle1);
         }
         if(num6!=0){
-            Bundle bundle2 = new Bundle("Audio","Flac",6,810.0,num6);
+            Bundle bundle2 = new Bundle("Audio","FLAC",6,810.0,num6);
             detailsOfBundles.add(bundle2);
         }
         if(num9!=0){
-            Bundle bundle3 = new Bundle("Audio","Flac",9,1147.5,num9);
+            Bundle bundle3 = new Bundle("Audio","FLAC",9,1147.5,num9);
             detailsOfBundles.add(bundle3);
         }
-        if(detailsOfBundles.size()>0){
-            return detailsOfBundles;
-        }
-        return null;
+       return detailsOfBundles;
     }
 
-  /*  public Map<Integer,Integer> calculateVid(){
+    public List<Bundle>calculateVid(){
         int num3=0;
         int num5=0;
         int num9=0;
+        int numOfPost=numOfVid;
+        List<Bundle> detailsOfBundles = new ArrayList<>();
 
-        if(numOfVid%3==0){
-            if(numOfVid>9){
-                num9 = numOfVid/9;
-                num3 = numOfVid%9/3;
+        if(numOfPost<=3){
+            num3=1;
+            Bundle bundle3 = new Bundle("Video", "VID", 3, 570.0, num3);
+            detailsOfBundles.add(bundle3);
+        }else if(numOfPost<=5){
+            num5=1;
+            Bundle bundle5 = new Bundle("Video","VID",5,900.0,num5);
+            detailsOfBundles.add(bundle5);
+        }else if(numOfPost==7){
+            num5=1;
+            num3=1;
+            Bundle bundle5 = new Bundle("Video","VID",5,900.0,num5);
+            Bundle bundle3 = new Bundle("Video","VID",3,570.0,num3);
+            detailsOfBundles.add(bundle3);
+            detailsOfBundles.add(bundle5);
+        }else {
+
+            for (int i = 0; i < numOfPost / 9 + 1; i++) {
+                for (int j = 0; j < (numOfPost - 9 * i) / 5 + 1; j++) {
+                    for (int k = 0; k < (numOfPost - 9 * i - 5 * j) / 3 + 1; k++) {
+                        if (i * 9 + j * 5 + k * 3 == numOfPost) {
+                            if (i > 0) {
+                                num9 = i;
+                                Bundle bundle9 = new Bundle("Video", "VID", 9, 1530.0, num9);
+                                detailsOfBundles.add(bundle9);
+                            }
+                            if (j > 0) {
+                                num5 = j;
+                                Bundle bundle5 = new Bundle("Video", "VID", 5, 900.0, num5);
+                                detailsOfBundles.add(bundle5);
+                            }
+                            if (k > 0) {
+                                num3 = k;
+                                Bundle bundle3 = new Bundle("Video", "VID", 3, 570.0, num3);
+                                detailsOfBundles.add(bundle3);
+                            }
+                            return detailsOfBundles;
+
+                        }
+                    }
+                }
             }
-            num3 = numOfVid/3;
-        }else if(numOfVid%5==0){
-            num5 = numOfVid/5;
-        }else if(numOfVid%5==3){
-            num5 = numOfVid/5;
-            num3 = 1;
-        }else if(numOfVid%3==5){
-            if((numOfVid-5)>9){
-                num9 = numOfVid/9;
-                num3 = numOfVid%9/3;
-                num5 = 1;
+
+        /*for(int i=0;i<numOfPost/3+1;i++){
+            for(int j=0;j<(numOfPost-3*i)/5+1;j++){
+                for(int k=0;k<(numOfPost-3*i-6*j)/9+1;k++){
+                    if(i*3+j*5+k*9==numOfPost){
+                        if(i>0){
+                            Bundle bundle1 = new Bundle("Video","VID",3,570.0,i);
+                            detailsOfBundles.add(bundle1);
+                        }
+                        if(j>0){
+                            Bundle bundle2 = new Bundle("Video","VID",5,900.0,j);
+                            detailsOfBundles.add(bundle2);
+                        }
+                        if(k>0){
+                            Bundle bundle3 = new Bundle("Video","VID",9,1530.0,k);
+                            detailsOfBundles.add(bundle3);
+                        }
+                        return detailsOfBundles;
+                    }
+                }
             }
-            num3 = numOfVid/3;
-            num5 = 1;
-        }else if(numOfVid%5)
-
-
-
-    }*/
+        }*/
+        }
+        return detailsOfBundles;
+    }
 }
