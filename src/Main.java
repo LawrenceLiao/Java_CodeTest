@@ -83,8 +83,6 @@ public class Main {
                     .stream()
                     .filter(bundle -> bundle.getCode().equals(type))
                     .forEach(bundle -> System.out.println("  " + bundle.getNumOfBundles() + " x " + bundle.getNumOfPosts() + " $" + bundle.getPrice()));
-
-
         }
 
     }
@@ -151,61 +149,77 @@ public class Main {
         }
     }
 
+    public static Menu getResponse(){
+
+
+            System.out.println("-----------Menu-----------");
+            for (Menu m : Menu.values()) {
+                System.out.println(m.getOption() + ". " + m.getContent());
+            }
+
+
+            System.out.println("Please enter your choice!");
+            //Using scanner to get input;
+            Scanner sc = new Scanner(System.in);
+            String choice = sc.nextLine();
+
+            for (Menu m : Menu.values()) {
+                if (choice.equalsIgnoreCase(m.getOption()))
+                    return m;
+
+            }
+            System.out.println("Invalid input, please try again!");
+
+
+        return null;
+    }
+
 
     public static void main(String[] args) {
 
-        List<Bundle>quotation = new ArrayList<>();
+        Menu response = null;
 
-        System.out.println("Please type your order!");
-        Calculator calculator = input();
+        do {
+            response = getResponse();
 
-        //Calculator calculator = fileReader();
+            switch (response){
 
-        if(calculator==null){
-            System.out.println("No order provided!");
-            return;
-        }
-        quotation.addAll(calculator.calculateImg());
-        quotation.addAll(calculator.calculateFlac());
-        quotation.addAll((calculator.calculateVid()));
-
-        output(calculator,quotation);
-
-      /*  List<String> typeList = quotation.stream().map(bundle -> bundle.getCode()).distinct().collect(Collectors.toList());
+                case INPUT_ORDER:
+                    List<Bundle> quotation = new ArrayList<>();
 
 
-        for(String type : typeList) {
-            int totalNum = 0;
-            switch (type){
-                case "IMG":
-                    totalNum = calculator.getNumOfImg();
-                    System.out.println(totalNum);
+                    System.out.println("Please type your order!");
+                    Calculator calculator = input();
+
+                    //Calculator calculator = fileReader();
+
+                    if (calculator == null) {
+                        System.out.println("No order provided!");
+                        return;
+                    }
+                    quotation.addAll(calculator.calculateImg());
+                    quotation.addAll(calculator.calculateFlac());
+                    quotation.addAll((calculator.calculateVid()));
+
+                    output(calculator, quotation);
+
                     break;
-                case "FLAC":
-                    totalNum = calculator.getNumOfFlac();
-                    System.out.println(totalNum);
+
+                case EXIT:
+                    System.out.println("Are you sure to exit the system? Press Y to confirm");
+                    Scanner sc = new Scanner(System.in);
+                    String confirmation = sc.nextLine();
+                    if(confirmation.equalsIgnoreCase("Y")){
+                        System.out.println("------Thanks!------");
+                        System.exit(0);
+                    }
                     break;
-                case "VID":
-                    totalNum = calculator.getNumOfVid();
-                    break;
-                default:
-                    System.out.println("Stupid");
+
             }
 
-            double sum = quotation.stream()
-                    .filter(bundle -> bundle.getCode().equals(type))
-                    .mapToDouble(bundle -> bundle.getNumOfBundles() * bundle.getPrice())
-                    .summaryStatistics().getSum();
-
-            System.out.println(totalNum+ " " + type + " $" + sum);
-
-            quotation
-                    .stream()
-                    .filter(bundle -> bundle.getCode().equals(type))
-                    .forEach(bundle -> System.out.println("  " + bundle.getNumOfBundles() + " x " + bundle.getNumOfPosts() + " $" + bundle.getPrice()));
+        }while (true);
 
 
-        }*/
 
     }
 }
